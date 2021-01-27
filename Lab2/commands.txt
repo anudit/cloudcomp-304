@@ -1,0 +1,119 @@
+aws ec2 create-key-pair --key-name 304lab2 --query 'KeyMaterial' --output text > 304lab2.pem
+aws ec2 create-security-group --group-name sg-304lab1 --description "My security group"
+{
+    "GroupId": "sg-017c2d7de37cdb4b6"
+}
+aws ec2 run-instances --image-id ami-0885b1f6bd170450c --count 1 --instance-type t2.micro --key-name 304lab2 --security-group-ids sg-017c2d7de37cdb4b6
+{
+    "Groups": [],
+    "Instances": [
+        {
+            "AmiLaunchIndex": 0,
+            "ImageId": "ami-0885b1f6bd170450c",
+            "InstanceId": "i-083765ee06379345c",
+            "InstanceType": "t2.micro",
+            "KeyName": "304lab2",
+            "LaunchTime": "2021-01-21T04:31:38+00:00",
+            "Monitoring": {
+                "State": "disabled"
+            },
+            "Placement": {
+                "AvailabilityZone": "us-east-1c",
+                "GroupName": "",
+                "Tenancy": "default"
+            },
+            "PrivateDnsName": "ip-172-31-84-38.ec2.internal",
+            "PrivateIpAddress": "172.31.84.38",
+            "ProductCodes": [],
+            "PublicDnsName": "",
+            "State": {
+                "Code": 0,
+                "Name": "pending"
+            },
+            "StateTransitionReason": "",
+            "SubnetId": "subnet-a62abc87",
+            "VpcId": "vpc-d79235aa",
+            "Architecture": "x86_64",
+            "BlockDeviceMappings": [],
+            "ClientToken": "1c0340c9-af89-4260-9243-d97fec97c5bb",
+            "EbsOptimized": false,
+            "EnaSupport": true,
+            "Hypervisor": "xen",
+            "NetworkInterfaces": [
+                {
+                    "Attachment": {
+                        "AttachTime": "2021-01-21T04:31:38+00:00",
+                        "AttachmentId": "eni-attach-014fd4a79d8f03397",
+                        "DeleteOnTermination": true,
+                        "DeviceIndex": 0,
+                        "Status": "attaching",
+                        "NetworkCardIndex": 0
+                    },
+                    "Description": "",
+                    "Groups": [
+                        {
+                            "GroupName": "304lab1",
+                            "GroupId": "sg-017c2d7de37cdb4b6"
+                        }
+                    ],
+                    "Ipv6Addresses": [],
+                    "MacAddress": "12:6e:40:39:a2:83",
+                    "NetworkInterfaceId": "eni-0c5b8285fc0a2f42f",
+                    "OwnerId": "501151665505",
+                    "PrivateDnsName": "ip-172-31-84-38.ec2.internal",
+                    "PrivateIpAddress": "172.31.84.38",
+                    "PrivateIpAddresses": [
+                        {
+                            "Primary": true,
+                            "PrivateDnsName": "ip-172-31-84-38.ec2.internal",
+                            "PrivateIpAddress": "172.31.84.38"
+                        }
+                    ],
+                    "SourceDestCheck": true,
+                    "Status": "in-use",
+                    "SubnetId": "subnet-a62abc87",
+                    "VpcId": "vpc-d79235aa",
+                    "InterfaceType": "interface"
+                }
+            ],
+            "RootDeviceName": "/dev/sda1",
+            "RootDeviceType": "ebs",
+            "SecurityGroups": [
+                {
+                    "GroupName": "304lab1",
+                    "GroupId": "sg-017c2d7de37cdb4b6"
+                }
+            ],
+            "SourceDestCheck": true,
+            "StateReason": {
+                "Code": "pending",
+                "Message": "pending"
+            },
+            "VirtualizationType": "hvm",
+            "CpuOptions": {
+                "CoreCount": 1,
+                "ThreadsPerCore": 1
+            },
+            "CapacityReservationSpecification": {
+                "CapacityReservationPreference": "open"
+            },
+            "MetadataOptions": {
+                "State": "pending",
+                "HttpTokens": "optional",
+                "HttpPutResponseHopLimit": 1,
+                "HttpEndpoint": "enabled"
+            },
+            "EnclaveOptions": {
+                "Enabled": false
+            }
+        }
+    ],
+    "OwnerId": "501151665505",
+    "ReservationId": "r-090eecc150f9de90f"
+}
+
+aws ec2 terminate-instances --instance-ids i-083765ee06379345c
+
+aws s3 mb s3://304lab2
+aws s3 cp commands.txt s3://304lab2
+aws s3 rb s3://304lab2
